@@ -1,38 +1,36 @@
-# create-svelte
+# XState v5 Receptionist Example
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+This project is a small playground to test the new Receptionist pattern 
+in XState v5! Exciting stuff!
 
-## Creating a project
+This new API will help us clean up references - instead of storing 
+references to other machines in context, we can use `system.get('someId')`
+to retrieve the right actor. This can be used to send events as well as 
+get the latest snapshot.
 
-If you're seeing this, you've probably already done this step. Congrats!
-
-```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+Some things to note about the structure:
+- [The app machine](./src/machines/app.machine.ts) is the root of the statechart tree. It uses a top-level `invoke`, which binds the lifetime of the children to itself (instead of spawning). This implicitly creates a system.
+- [The page machine](./src/machines/page.machine.ts) is where we trigger the INCREMENT_COUNTER event, which will forward the event to the counter machine and then take the latest value.
+- [The counter machine](./src/machines/page.machine.ts) simply receives the event (in this case from _through_ the page machine) and is read (again, through the page machine).
+- [The Svelte page](./src/routes/+page.svelte) is where we interpret the actor tree, subscribe to changes, and trigger events.
 
 ## Developing
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+Once you've created a project and installed dependencies with `pnpm install`, start a development server:
 
 ```bash
-npm run dev
+pnpm dev
 
 # or start the server and open the app in a new browser tab
-npm run dev -- --open
+pnpm dev -- --open
 ```
 
 ## Building
 
-To create a production version of your app:
+To create a production version of the app:
 
 ```bash
-npm run build
+pnpm build
 ```
 
 You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
