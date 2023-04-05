@@ -27,12 +27,9 @@ export const counterMachine = createMachine({
 },
   {
     actions: {
-      increment: assign(({ context }) => {
-        console.log('(counter) increment to', context.count + 1);
-        return {
-          count: context.count + 1,
-        }
-      }),
+      increment: assign(({ context }) => ({
+        count: context.count + 1,
+      })),
     },
   });
 

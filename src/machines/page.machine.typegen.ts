@@ -14,7 +14,6 @@ export interface Typegen0 {
 	};
 	eventsCausingActions: {
 		forwardIncrement: 'INCREMENT_COUNTER';
-		logCount: 'INCREMENT_COUNTER';
 		retrieveIncrement: 'INCREMENT_COUNTER';
 	};
 	eventsCausingDelays: {};

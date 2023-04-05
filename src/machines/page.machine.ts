@@ -21,22 +21,21 @@ export const pageMachine = createMachine({
 
   on: {
     INCREMENT_COUNTER: {
-      actions: ['forwardIncrement', 'retrieveIncrement', 'logCount']
+      // This example is flawed because the INCREMENT event is not guaranteed 
+      // to run in between the two actions. 
+      actions: ['forwardIncrement', 'retrieveIncrement']
     },
   },
 },
   {
     actions: {
-      forwardIncrement: sendTo(({ system }) => system.get('counter'), { type: 'INCREMENT' }),
-      retrieveIncrement: assign(({ system }) => {
-        console.log('(page) retrieveIncrement', system.get('counter').getSnapshot().context.count);
-        return {
-          count: system.get('counter').getSnapshot().context.count,
-        }
-      }),
-      logCount: ({ context }) => {
-        console.log('(page) logCount', context.count);
-      }
+      forwardIncrement: sendTo(
+        ({ system }) => system.get('counter'),
+        { type: 'INCREMENT' }
+      ),
+      retrieveIncrement: assign(({ system }) => ({
+        count: system.get('counter').getSnapshot().context.count,
+      })),
     },
   });
 
